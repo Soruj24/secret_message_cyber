@@ -1,17 +1,15 @@
 import { Schema, model, models } from 'mongoose';
 
-const MessageSchema = new Schema({
+const GroupMessageSchema = new Schema({
+  group: { type: Schema.Types.ObjectId, ref: 'Group', required: true },
   sender: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-  receiver: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   content: { type: String, required: true },
   timestamp: { type: Date, default: Date.now },
-  isRead: { type: Boolean, default: false },
-  readAt: { type: Date },
-  // For media sharing
+  isRead: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   mediaType: { type: String, enum: ['text', 'image', 'video', 'audio'], default: 'text' },
   mediaUrl: { type: String }
 });
 
-const Message = models.Message || model('Message', MessageSchema);
+const GroupMessage = models.GroupMessage || model('GroupMessage', GroupMessageSchema);
 
-export default Message;
+export default GroupMessage;

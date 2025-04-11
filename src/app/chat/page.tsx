@@ -14,14 +14,21 @@ export default async function ChatPage({
     redirect('/login');
   }
 
-  const receiverId = searchParams.receiverId as string;
+  // Await searchParams and check for receiverId
+  const { receiverId } = await searchParams;
+console.log(receiverId);
+  if (typeof receiverId !== 'string') {
+    // Handle missing or incorrect receiverId
+    console.error('No receiverId provided!');
+    return <div>No receiver selected</div>; // or redirect to another page
+  }
 
   return (
     <div className="container mx-auto p-4 max-w-2xl">
       <h1 className="text-2xl font-bold mb-4">Chat</h1>
       <div className="space-y-4">
-        <MessageList receiverId={receiverId} />
-        <MessageInput receiverId={receiverId} />
+        <MessageList receiverId={receiverId} currentUserId={session.user.id} />
+        <MessageInput receiverId={receiverId} currentUserId={session.user.id} />
       </div>
     </div>
   );
