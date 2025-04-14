@@ -1,16 +1,13 @@
 import { Schema, model, models } from 'mongoose';
 
 const UserSchema = new Schema({
-  email: { type: String, required: true, unique: true },
   name: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  isBunned: {
-    type: Boolean,
-    default: false
-},
-  lastSeen: { type: Date, default: Date.now }
-});
+  avatar: { type: String },
+  status: { type: String, enum: ['online', 'offline', 'away'], default: 'offline' },
+  lastSeen: { type: Date },
+  contacts: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+}, { timestamps: true });
 
-const User = models.User || model('User', UserSchema);
-
-export default User;
+export default models.User || model('User', UserSchema);
